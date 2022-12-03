@@ -14,4 +14,17 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void testVehicleShowsManufacturer(){
+        Vehicle v = new Vehicle("testV", "Accord");
+
+        v.setManufacturer("Honda");
+
+//        assert
+        String expected = "Honda";
+        String result = v.getManufacturer();
+
+        assertEquals(result, expected);
+    }
 }
