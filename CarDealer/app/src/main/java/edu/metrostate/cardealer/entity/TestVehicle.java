@@ -1,6 +1,6 @@
-package edu.metrostate.cardealer;
+package edu.metrostate.cardealer.entity;
 
-public class Vehicle {
+public class TestVehicle {
 
     private final String id;
     private final String model;
@@ -11,10 +11,10 @@ public class Vehicle {
      * @param id
      * @param model
      */
-    Vehicle(String id, String model){
+    public TestVehicle(String id, String model){
         this.id = id;
         this.model = model;
-        this.manufacturer = null;
+        this.manufacturer = "Honda";
 
     }
 
