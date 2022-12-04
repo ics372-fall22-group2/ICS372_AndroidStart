@@ -2,6 +2,7 @@ package edu.metrostate.cardealer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,23 +43,16 @@ public class VehicleListActivity extends AppCompatActivity {
                 .setTitle("My alert")
                 .setCancelable(false)
                 .setTitle("Vehicle ID: " + vehicle.getVehicleId())
-                .setMessage(String.format("""
-                                Type : %s
-                                \nMake: %s
-                                \nModel: %s
-                                \nDealerId: %s
-                                \nDate Acquired: %s
-                                """
-                        , vehicle.getVehicleType()
-                        , vehicle.getManufacturer()
-                        , vehicle.getModel()
-                        , vehicle.getDealerId()
-                        , vehicle.getAcquisitionDate()))
+                .setMessage("Type : " + vehicle.getVehicleType() + "\n\nMake: " + vehicle.getManufacturer() + "\n\nModel: " + vehicle.getModel() + "\n\nDealerId: " + vehicle.getDealerId() + "\n\nDate Acquired: " + vehicle.getAcquisitionDate() + "\n")
                 .setPositiveButton( "OK", (dialog1, id) -> dialog1.dismiss()).create();
 
         dialog.show();
 
 
 
+    }
+    public void backHome (View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
