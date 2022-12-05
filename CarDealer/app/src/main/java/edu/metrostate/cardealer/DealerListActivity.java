@@ -3,6 +3,8 @@ package edu.metrostate.cardealer;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +28,12 @@ public class DealerListActivity extends AppCompatActivity {
         ListView dealerList = findViewById(R.id.dealer_list);
         dealerList.setAdapter(adapter);
 
-        dealerList.setOnItemClickListener((parent, view, position, id) -> showDialog(adapter.getItem(position)));
+        dealerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showDialog(adapter.getItem(position));
+            }
+        });
 
     }
 
@@ -36,7 +43,7 @@ public class DealerListActivity extends AppCompatActivity {
                 .setTitle("My alert2")
                 .setCancelable(false)
                 .setTitle("Dealer ID: " + dealer.getDealerId())
-                .setMessage(String.format("Name: %s ", dealer.getName()))
+                .setMessage(dealer.toString())
                 .setPositiveButton( "OK", (dialog1, id) -> dialog1.dismiss()).create();
 
         dialog.show();

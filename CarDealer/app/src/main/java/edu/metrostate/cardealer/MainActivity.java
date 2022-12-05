@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //intents for vehicle list and dealer list activity classes
         Intent vehicleListIntent = new Intent(MainActivity.this, VehicleListActivity.class);
         Intent dealerListIntent = new Intent(MainActivity.this, DealerListActivity.class);
 
@@ -23,9 +24,13 @@ public class MainActivity extends AppCompatActivity {
         displayView(dealerListIntent, dealerListView);
 
 
-
     }
 
+    /** A method to start activities based based on intent and view params
+     *
+     * @param intent
+     * @param view
+     */
     private void displayView(Intent intent, View view) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override

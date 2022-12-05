@@ -11,12 +11,13 @@ public class SUVTest{
 
     @BeforeEach
     public void setUp() {
-        vehicle = new SUV("T01", "Honda", "Accord", 1670102205108L, 34500.00, "dealer001", false );
+        vehicle = new SUV("dealer001", "suv", "Honda", "Accord", "v001", 34500.05, 1670102205108L);
     }
+
 
     @Test
     public void returnsSUVType(){
-        String manufacturer = "Honda";
-        assertEquals(manufacturer, vehicle.getManufacturer());
+        String expectedType = "suv";
+        assertEquals(expectedType, vehicle.getVehicleType().toLowerCase());
     }
 }
