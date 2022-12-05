@@ -20,8 +20,8 @@ class VehicleTest {
         String vehicleType = "seDAN";
         String vehicleId = "v0001";
         testVehicle = VehicleFactory.createVehicle(vehicleType, vehicleId);
-        testVehicle.setManufacturer("Honda");
-        testVehicle.setModel("Accord");
+        testVehicle.setVehicleManufacturer("Honda");
+        testVehicle.setVehicleModel("Accord");
         testVehicle.setAcquisitionDate(1515354694451L);
         testVehicle.setPrice(20123.0);
         LOGGER.info(testVehicle.toString());

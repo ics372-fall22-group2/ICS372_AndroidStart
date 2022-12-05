@@ -25,9 +25,9 @@ public class CarDealerApplication extends Application {
         //TODO: Remove this code
         for(int i = 0; i < 20; i++) {
             Vehicle vehicle = VehicleFactory.createVehicle("sedan", Integer.toString(i));
-            vehicle.setModel("Accord");
-            vehicle.setManufacturer("Honda");
-            vehicle.setDealerId("dealer" +(i%3)); //to generate 3 unique dealers
+            vehicle.setVehicleModel("Accord");
+            vehicle.setVehicleManufacturer("Honda");
+            vehicle.setDealershipId("dealer" +(i%3)); //to generate 3 unique dealers
             vehicle.setAcquisitionDate(1515354694451L);
 
             vehicleList.add(vehicle);

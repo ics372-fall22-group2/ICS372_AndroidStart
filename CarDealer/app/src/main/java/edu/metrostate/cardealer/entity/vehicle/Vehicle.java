@@ -1,72 +1,90 @@
 package edu.metrostate.cardealer.entity.vehicle;
 
+import org.nd4j.shade.jackson.annotation.JsonIgnore;
+import org.nd4j.shade.jackson.annotation.JsonSubTypes;
+import org.nd4j.shade.jackson.annotation.JsonTypeInfo;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+    @JsonTypeInfo(
+            use = JsonTypeInfo.Id.NAME,
+            include = JsonTypeInfo.As.PROPERTY,
+            property = "vehicle_type")
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = Sedan.class, name = "sedan"),
+            @JsonSubTypes.Type(value = PickUp.class, name = "pickup"),
+            @JsonSubTypes.Type(value = SUV.class, name = "suv"),
+            @JsonSubTypes.Type(value = SportsCar.class, name = "sports car")
+    })
 public abstract class Vehicle {
     public enum VehicleType {SEDAN, SUV, SPORTS_CAR, PICK_UP}
 
-    private String VehicleId;
-    private String manufacturer;
-    private String model;
-    private Long acquisitionDate;
+    private String dealershipId;
+    private String vehicleType;
+    private String vehicleManufacturer;
+    private String vehicleModel;
+    private String vehicleId;
     private BigDecimal price;
-    protected String vehicleType;
-    private String dealerId;
-    private boolean isOnLoan;
+    private Long acquisitionDate;
+    @JsonIgnore private boolean isOnLoan = false;
 
     public Vehicle(){
 
     }
-
     /**Constructor
      *
+     * @param dealershipId the dealerId
+     * @param vehicleType the vehicle type: SUV, PickUP, SportsCar, Sedan
+     * @param vehicleManufacturer the vehicleManufacturer
+     * @param vehicleModel the vehicleModel
      * @param vehicleId the vehicle id
-     * @param manufacturer the manufacturer
-     * @param model the model
-     * @param acquisitionDate the vehicle acquisition date in epochMill
      * @param price the vehicle price
-//     * @param vehicleType the vehicle type: SUV, PickUP, SportsCar, Sedan
-     * @param dealerId the dealerId
-     * @param isOnLoan boolean true or false
+     * @param acquisitionDate the vehicle acquisition date in epochMill
+//     * @param isOnLoan boolean true or false
      */
-    public Vehicle(String vehicleId, String manufacturer, String model, Long acquisitionDate, Number price, String dealerId, boolean isOnLoan) {
-        VehicleId = vehicleId;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.dealerId = dealerId;
+//    public Vehicle(String dealershipId, String vehicleType, String vehicleManufacturer, String vehicleModel, String vehicleId, Double price, Long acquisitionDate) {
+//        this(dealershipId, vehicleType, vehicleManufacturer, vehicleModel, vehicleId, price, acquisitionDate);
+//        this.isOnLoan = isOnLoan;
+//    }
+
+    public Vehicle(String dealershipId, String vehicleType, String vehicleManufacturer, String vehicleModel, String vehicleId, Double price, Long acquisitionDate) {
+        this.dealershipId = dealershipId;
+        this.vehicleType = vehicleType;
+        this.vehicleManufacturer = vehicleManufacturer;
+        this.vehicleModel = vehicleModel;
+        this.vehicleId = vehicleId;
+        this.setPrice(price);
         this.acquisitionDate = acquisitionDate;
-        setPrice((Double) price);
-//        this.vehicleType = vehicleType;
-        this.isOnLoan = isOnLoan;
+        this.isOnLoan = false;
     }
 
 
     public String getVehicleId() {
-        return VehicleId;
+        return vehicleId;
     }
 
     public void setVehicleId(String vehicleId) {
-        VehicleId = vehicleId;
+        this.vehicleId = vehicleId;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
+    public String getVehicleManufacturer() {
+        return vehicleManufacturer;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setVehicleManufacturer(String vehicleManufacturer) {
+        this.vehicleManufacturer = vehicleManufacturer;
     }
 
-    public String getModel() {
-        return model;
+    public String getVehicleModel() {
+        return vehicleModel;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
     }
 
     /**
@@ -95,42 +113,37 @@ public abstract class Vehicle {
         return price.doubleValue();
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = BigDecimal.valueOf(price);
     }
 
     public abstract String getVehicleType();
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
+        public void setDealershipId(String newDealerId){
+        dealershipId = newDealerId;
     }
 
-    public void setDealerId(String newDealerId){
-        dealerId = newDealerId;
-    }
-
-    public String getDealerId(){
-        return this.dealerId;
+    public String getDealershipId(){
+        return this.dealershipId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Vehicle)) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return getVehicleId().equals(vehicle.getVehicleId()) && Objects.equals(getManufacturer(), vehicle.getManufacturer()) && Objects.equals(getModel(), vehicle.getModel()) && Objects.equals(getAcquisitionDate(), vehicle.getAcquisitionDate()) && Objects.equals(getVehicleType(), vehicle.getVehicleType());
+        if (!(o instanceof Vehicle vehicle)) return false;
+        return getVehicleId().equals(vehicle.getVehicleId()) && Objects.equals(getVehicleManufacturer(), vehicle.getVehicleManufacturer()) && Objects.equals(getVehicleModel(), vehicle.getVehicleModel()) && Objects.equals(getAcquisitionDate(), vehicle.getAcquisitionDate()) && Objects.equals(getVehicleType(), vehicle.getVehicleType());
     }
 
     @Override
     public String toString() {
         return "Vehicle{" +
-                "VehicleId=" + VehicleId +
-                ", manufacturer='" + manufacturer + '\'' +
-                ", model='" + model + '\'' +
+                "vehicleId=" + vehicleId +
+                ", vehicleManufacturer='" + vehicleManufacturer + '\'' +
+                ", vehicleModel='" + vehicleModel + '\'' +
                 ", acquisitionDate=" + acquisitionDate +
                 ", price=" + price +
-                ", vehicleType=" + vehicleType +
-                ", dealerId=" + dealerId +
+                ", vehicleType=" + getVehicleType() +
+                ", dealerId=" + dealershipId +
                 '}';
     }
 
