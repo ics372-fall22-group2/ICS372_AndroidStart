@@ -16,6 +16,31 @@ public class VehicleListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_list);
+        setContentView(R.layout.activity_dealer_list);
+        findViewById(R.id.Export_json_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((DealerTrackerApplication)getApplication()).exportVehicleList("JSON");
+            }
+        });
+
+
+        ListView lv = findViewById(R.id.dealer_list);
+
+        lv.setAdapter(new DealerAdapter(this,
+                ((DealerTrackerApplication)getApplication()).getDealerList()));
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("itemClick", String.valueOf(i));
+                Dealer dealer = ((DealerTrackerApplication) getApplication()).getDealerList().get(i);
+                Intent intent = new Intent(DealerListActivity.this, DealerActivity.class);
+                intent.putExtra("dealerId", dealer.getDealerId());
+                startActivity(intent);
+            }
+        });
+
+    }
 
         // Get the application instance from the activity
         CarDealerApplication app = (CarDealerApplication) getApplication();
@@ -25,7 +50,7 @@ public class VehicleListActivity extends AppCompatActivity {
 
         // Find the list view and add the adapter
         ListView vehicleList = ((ListView)findViewById(R.id.vehicle_list));
-        vehicleList.setAdapter(adapter);
+        vehicleList.setAdapterl(adapter);
 
         vehicleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
