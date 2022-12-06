@@ -41,8 +41,8 @@ public class AddVehicleActivity extends AppCompatActivity {
                                         dialog.dismiss();
                                     }
 
-                                }
-            }
+                               ) }
+            };
         }
     }
     public void backHome (View view) {
