@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import java.util.Date;
 
+import edu.metrostate.cardealer.MainActivity;
 import edu.metrostate.cardealer.R;
 import edu.metrostate.cardealer.VehicleListActivity;
 import edu.metrostate.cardealer.entity.dealer.Dealer;
@@ -59,7 +60,10 @@ public class VehicleActivity extends AppCompatActivity {
         }
     }
 
-
+    public void backHome (View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     public void backVehicleList(View view) {
         Intent intent = new Intent(this, VehicleListActivity.class);
         startActivity(intent);
