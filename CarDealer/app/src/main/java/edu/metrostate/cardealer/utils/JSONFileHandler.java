@@ -10,11 +10,11 @@ import org.nd4j.shade.jackson.databind.ser.impl.SimpleFilterProvider;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import edu.metrostate.cardealer.entity.dealer.Dealer;
 import edu.metrostate.cardealer.entity.vehicle.Vehicle;
 import edu.metrostate.cardealer.entity.vehicle.VehicleFactory;
 
@@ -26,7 +26,7 @@ import edu.metrostate.cardealer.entity.vehicle.VehicleFactory;
  */
 public class JSONFileHandler implements IFileHandler {
 
-     static void exportVehicles(List<Vehicle> vehicleList, String dealerId) {
+     static void exportVehicles(List<Vehicle> vehicleList, Dealer dealer) {
          // create object mapper instance
          ObjectMapper mapper = new ObjectMapper();
          FilterProvider filters = new SimpleFilterProvider()
@@ -35,7 +35,7 @@ public class JSONFileHandler implements IFileHandler {
          ObjectWriter writer = mapper.writer(filters);
 
          try {
-             writer.withDefaultPrettyPrinter().writeValue(Paths.get("src/main/resources/vehicle-storage/" + dealerId + "_dealerVehicles.json").toFile(), vehicleList);
+             writer.withDefaultPrettyPrinter().writeValue(Paths.get("src/main/resources/vehicle-storage/" + dealer.getDealerId() + "_dealerVehicles.json").toFile(), vehicleList);
          } catch (IOException e) {
              System.out.println("Something went wrong");
              throw new RuntimeException(e);
@@ -43,8 +43,8 @@ public class JSONFileHandler implements IFileHandler {
      }
 
     @Override
-    public <Vehicle> Optional<List<Vehicle>> importDataFromFile(String filePath) {
-         List<Vehicle> vehicleList = new ArrayList<>();
+    public Optional<List<Vehicle>> importDealerVehiclesFromFile(String filePath) {
+         List<edu.metrostate.cardealer.entity.vehicle.Vehicle> vehicleList = new ArrayList<>();
         try {
             // create object mapper instance
             ObjectMapper mapper = new ObjectMapper();
@@ -53,45 +53,53 @@ public class JSONFileHandler implements IFileHandler {
             Map<?, ?> map = mapper.readValue(Paths.get(filePath).toFile(), Map.class);
             List<?> car_inventory = (List<?>) map.get("car_inventory");
 
-            System.out.println("User defined car inventory");
-            System.out.println(car_inventory);
-
-            var entryCount = 0;
-            for (Map.Entry<?, ?> entry : map.entrySet()) {
-                System.out.println(entry.getKey() + "=" + entry.getValue());
-                entryCount++;
-            }
-            System.out.println(entryCount);
-            //List of vehicles
+            //Parse json object object to create vehicle objects
             for (var obj: car_inventory) {
                 var dealerId = obj.toString().split(",")[0].split("=")[1];
                 var vehicleType = obj.toString().split(",")[1].split("=")[1];
                 var vehicleManufacturer = obj.toString().split(",")[2].split("=")[1];
                 var vehicleModel = obj.toString().split(",")[3].split("=")[1];
                 var vehicleId = obj.toString().split(",")[4].split("=")[1];
-                var acquisitionDate = obj.toString().split(",")[5].split("=")[1];
-                var price = obj.toString().split(",")[6].split("=")[1];
+                var price = obj.toString().split(",")[5].split("=")[1];
+                var acquisitionDate = obj.toString().split(",")[6].split("=")[1];
 
-                Vehicle v = (Vehicle) VehicleFactory.createVehicle(vehicleType, vehicleId);
+                Vehicle v = VehicleFactory.createVehicle(vehicleType, vehicleId);
+                v.setDealershipId(dealerId);
+                v.setManufacturer(vehicleManufacturer);
+                v.setModel(vehicleModel);
+                v.setPrice(Double.parseDouble(price));
+                v.setAcquisitionDate(Long.valueOf(acquisitionDate.substring(0, acquisitionDate.length() -1)));
+
+                //add each vehicle to the list of vehicles
                 vehicleList.add(v);
-
-                System.out.println(v);
-
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        //return an optional of vehicle list - this could be empty
         return Optional.of(vehicleList);
     }
 
     @Override
-    public <T, U> Collection<U> parse(T data) {
-        return null;
+    public String exportDealerVehiclesToFile(Dealer dealer) {
+        ObjectMapper mapper = new ObjectMapper();
+        FilterProvider filters = new SimpleFilterProvider()
+                .addFilter("filter properties by name", SimpleBeanPropertyFilter.serializeAllExcept("parsedAcquisitionDate"));
+
+        ObjectWriter writer = mapper.writer(filters);
+
+        //set directory to export json files
+        String exportFilePath = "src/main/java/edu/metrostate/cardealer/data/" + dealer.getDealerId() + "_dealerVehicles.json";
+        try {
+            writer.withDefaultPrettyPrinter().writeValue(Paths.get(exportFilePath).toFile(), dealer.getDealerVehicles());
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+            throw new RuntimeException(e);
+        }
+
+        return exportFilePath;
     }
 
-    @Override
-    public <T> void exportDataToFile(List<T> dataList) {
-
-    }
 }
 

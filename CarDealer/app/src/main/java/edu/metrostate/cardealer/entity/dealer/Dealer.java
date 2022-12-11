@@ -57,7 +57,7 @@ public class Dealer {
      */
     public boolean addVehicle(Vehicle vehicle){
         if(!isAcceptingNewVehicles || vehicle == null) return false;
-
+        vehicle.setDealershipId(this.dealerId);
         return dealerVehicles.add(vehicle);
     }
 

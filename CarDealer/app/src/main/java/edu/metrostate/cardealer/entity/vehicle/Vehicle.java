@@ -9,48 +9,51 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
-    //Using Json Type info to enable vehicle subtype creation from imported JSON files
-    @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.PROPERTY,
-            property = "vehicle_type")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = Sedan.class, name = "sedan"),
-            @JsonSubTypes.Type(value = PickUp.class, name = "pickup"),
-            @JsonSubTypes.Type(value = SUV.class, name = "suv"),
-            @JsonSubTypes.Type(value = SportsCar.class, name = "sports car")
-    })
+//Using Json Type info to enable vehicle subtype creation from imported JSON files
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "vehicle_type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Sedan.class, name = "sedan"),
+        @JsonSubTypes.Type(value = PickUp.class, name = "pickup"),
+        @JsonSubTypes.Type(value = SUV.class, name = "suv"),
+        @JsonSubTypes.Type(value = SportsCar.class, name = "sports car")
+})
 public abstract class Vehicle {
     public enum VehicleType {SEDAN, SUV, SPORTS_CAR, PICK_UP}
 
     private String dealershipId;
     private String vehicleType;
-    private String vehicleManufacturer;
-    private String vehicleModel;
+    private String manufacturer;
+    private String model;
     private String vehicleId;
     private Double price;
     private Long acquisitionDate;
-    @JsonIgnore private boolean isOnLoan = false;
+    @JsonIgnore
+    private boolean isOnLoan = false;
 
-    public Vehicle(){
+    public Vehicle() {
 
     }
-    /**Constructor
+
+    /**
+     * Constructor
      *
-     * @param dealershipId the dealerId
-     * @param vehicleType the vehicle type: SUV, PickUP, SportsCar, Sedan
-     * @param vehicleManufacturer the vehicleManufacturer
-     * @param vehicleModel the vehicleModel
-     * @param vehicleId the vehicle id
-     * @param price the vehicle price
+     * @param dealershipId    the dealerId
+     * @param vehicleType     the vehicle type: SUV, PickUP, SportsCar, Sedan
+     * @param manufacturer    the vehicleManufacturer
+     * @param model           the vehicleModel
+     * @param vehicleId       the vehicle id
+     * @param price           the vehicle price
      * @param acquisitionDate the vehicle acquisition date in epochMill
-//     * @param isOnLoan boolean true or false
+     *                        //     * @param isOnLoan boolean true or false
      */
-    public Vehicle(String dealershipId, String vehicleType, String vehicleManufacturer, String vehicleModel, String vehicleId, Double price, Long acquisitionDate) {
+    public Vehicle(String dealershipId, String vehicleType, String manufacturer, String model, String vehicleId, Double price, Long acquisitionDate) {
         this.dealershipId = dealershipId;
         this.vehicleType = vehicleType;
-        this.vehicleManufacturer = vehicleManufacturer;
-        this.vehicleModel = vehicleModel;
+        this.manufacturer = manufacturer;
+        this.model = model;
         this.vehicleId = vehicleId;
         this.price = price;
         this.acquisitionDate = acquisitionDate;
@@ -67,30 +70,31 @@ public abstract class Vehicle {
     }
 
     public String getManufacturer() {
-        return vehicleManufacturer;
+        return manufacturer;
     }
 
     public void setManufacturer(String vehicleManufacturer) {
-        this.vehicleManufacturer = vehicleManufacturer;
+        this.manufacturer = vehicleManufacturer;
     }
 
     public String getModel() {
-        return vehicleModel;
+        return model;
     }
 
     public void setModel(String vehicleModel) {
-        this.vehicleModel = vehicleModel;
+        this.model = vehicleModel;
     }
 
     /**
-     *
      * @return a parse string date value
      */
-    public String getAcquisitionDate(){
+    public String getAcquisitionDate() {
         return parseEpochMilliDate(acquisitionDate).toLocalDate().toString();
     }
 
-    /**A helper method to convert epoch date to parsedDate
+    /**
+     * A helper method to convert epoch date to parsedDate
+     *
      * @param epochDate the epochDate
      * @return parsed date from epochDate
      */
@@ -111,19 +115,21 @@ public abstract class Vehicle {
         this.price = price;
     }
 
-    public String getVehicleType(){
+    public String getVehicleType() {
         return this.vehicleType;
-    };
+    }
 
-    protected void setVehicleType(String vehicleType){
+    ;
+
+    protected void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
     }
 
-    public void setDealershipId(String newDealerId){
+    public void setDealershipId(String newDealerId) {
         dealershipId = newDealerId;
     }
 
-    public String getDealershipId(){
+    public String getDealershipId() {
         return this.dealershipId;
     }
 
@@ -137,26 +143,27 @@ public abstract class Vehicle {
     @Override
     public String toString() {
         return "Vehicle{" +
-                "vehicleId=" + vehicleId +
-                ", vehicleManufacturer='" + vehicleManufacturer + '\'' +
-                ", vehicleModel='" + vehicleModel + '\'' +
-                ", acquisitionDate=" + acquisitionDate +
+                "dealershipId='" + dealershipId + '\'' +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", vehicleId='" + vehicleId + '\'' +
                 ", price=" + price +
-                ", vehicleType=" + getVehicleType() +
-                ", dealerId=" + dealershipId +
+                ", acquisitionDate=" + acquisitionDate +
+                ", isOnLoan=" + isOnLoan +
                 '}';
     }
 
-    boolean isVehicleOnLoan(){
+    boolean isVehicleOnLoan() {
         return isOnLoan;
     }
 
-    /**
-     * A method to set vehicles on Loan if they are not instances of SportsCar
+    /**A method to set vehicles on Loan if they are not instances of SportsCar
+     *
      * @param onLoan
      */
     public void setOnLoan(boolean onLoan) {
-        if (this instanceof SportsCar){
+        if (this instanceof SportsCar) {
             return;
         }
         this.isOnLoan = onLoan;
