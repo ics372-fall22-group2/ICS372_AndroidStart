@@ -1,13 +1,14 @@
 package edu.metrostate.cardealer.entity.vehicle;
 
 public class SportsCar extends Vehicle {
-    private static String vehicleType =  String.valueOf(VehicleType.SPORTS_CAR);
+    private static final String vehicleType =  String.valueOf(VehicleType.SPORTS_CAR).replace("_", "\s"); //replace _ with space to get "SPORTS CAR" as type
 
     public static SportsCar getInstance(String vehicleId) {
         return new SportsCar(vehicleId);
     }
 
     public SportsCar(){
+        setVehicleType(vehicleType);
     }
 
     public SportsCar(String vehicleId){
@@ -18,14 +19,13 @@ public class SportsCar extends Vehicle {
     /** Constructor
      *
      * @param dealershipId dealershipId
-     * @param vehicletype vehicle type
      * @param vehicleManufacturer vehicle manufacturer
      * @param vehicleModel vehicle model
      * @param vehicleId vehicle id
      * @param price vehicle price
      * @param acquisitionDate acquisition date
      */
-    public SportsCar(String dealershipId, String vehicletype, String vehicleManufacturer, String vehicleModel, String vehicleId, Double price, Long acquisitionDate) {
+    public SportsCar(String dealershipId, String vehicleManufacturer, String vehicleModel, String vehicleId, Double price, Long acquisitionDate) {
         super(dealershipId, vehicleType, vehicleManufacturer, vehicleModel, vehicleId, price, acquisitionDate);
     }
 
@@ -37,4 +37,6 @@ public class SportsCar extends Vehicle {
     public String getVehicleType() {
         return vehicleType;
     }
+
+
 }
