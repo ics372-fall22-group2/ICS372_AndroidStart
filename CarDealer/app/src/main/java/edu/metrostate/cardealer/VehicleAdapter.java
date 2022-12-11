@@ -33,7 +33,7 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
         TextView dealerId = convertView.findViewById(R.id.vehicle_dealer_id);
 
         acquisitionDate.setText(getItem(position).getAcquisitionDate());
-        makeAndModel.setText(String.join(" ", getItem(position).getVehicleManufacturer(), getItem(position).getVehicleModel()));
+        makeAndModel.setText(String.join(" ", getItem(position).getManufacturer(), getItem(position).getModel()));
         dealerId.setText(getItem(position).getDealershipId());
 
         return convertView;

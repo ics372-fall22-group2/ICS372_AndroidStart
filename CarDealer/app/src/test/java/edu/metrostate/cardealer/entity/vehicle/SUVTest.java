@@ -11,7 +11,7 @@ public class SUVTest{
 
     @BeforeEach
     public void setUp() {
-        vehicle = new SUV("dealer001", "suv", "Honda", "Accord", "v001", 34500.05, 1670102205108L);
+        vehicle = new SUV("dealer001", "Honda", "Accord", "v001", 34500.05, 1670102205108L);
     }
 
 

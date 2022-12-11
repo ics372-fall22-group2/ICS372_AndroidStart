@@ -50,12 +50,21 @@ public class Dealer {
         return isAcceptingNewVehicles;
     }
 
+    /** Adds vehicle to dealer inventory if dealer is accepting new vehicle
+     *
+     * @param vehicle
+     * @return True or False
+     */
     public boolean addVehicle(Vehicle vehicle){
         if(!isAcceptingNewVehicles || vehicle == null) return false;
-
+        vehicle.setDealershipId(this.dealerId);
         return dealerVehicles.add(vehicle);
     }
 
+    /** Returns unmodifiable copy of the dealer inventory.
+     *
+     * @return dealerVehicles
+     */
     public List<Vehicle> getDealerVehicles(){
         return List.copyOf(this.dealerVehicles);
     }

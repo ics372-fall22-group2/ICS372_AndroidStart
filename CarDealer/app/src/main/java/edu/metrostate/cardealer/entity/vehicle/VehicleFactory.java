@@ -11,7 +11,7 @@ public class VehicleFactory {
         Vehicle vehicle = null;
 
         if(vehicleType.equalsIgnoreCase("sedan")){
-            vehicle = new Sedan(vehicleId).getInstance(vehicleId);
+            vehicle = Sedan.getInstance(vehicleId);
         }else if (vehicleType.equalsIgnoreCase("suv")){
             vehicle = SUV.getInstance(vehicleId);
         }else if (vehicleType.equalsIgnoreCase("pickup")) {

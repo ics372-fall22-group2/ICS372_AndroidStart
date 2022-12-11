@@ -18,12 +18,12 @@ class DealerTest {
         dealer1 = new Dealer("d001", "Dealer1");
 
         v1 = VehicleFactory.createVehicle("suv", "v001");
-        v1.setVehicleManufacturer("Toyota");
-        v1.setVehicleModel("Tundra");
+        v1.setManufacturer("Toyota");
+        v1.setModel("Tundra");
 
         v2 = VehicleFactory.createVehicle("sedan", "v002");
-        v2.setVehicleManufacturer("Honda");
-        v2.setVehicleModel("Accord");
+        v2.setManufacturer("Honda");
+        v2.setModel("Accord");
     }
 
     @Test

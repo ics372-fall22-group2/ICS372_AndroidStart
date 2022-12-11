@@ -50,8 +50,8 @@ public class VehicleListActivity extends AppCompatActivity {
                                 \nDate Acquired: %s
                                 """
                         , vehicle.getVehicleType()
-                        , vehicle.getVehicleManufacturer()
-                        , vehicle.getVehicleModel()
+                        , vehicle.getManufacturer()
+                        , vehicle.getModel()
                         , vehicle.getDealershipId()
                         , vehicle.getAcquisitionDate()))
                 .setPositiveButton( "OK", (dialog1, id) -> dialog1.dismiss()).create();
